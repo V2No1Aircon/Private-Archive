@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read Me When the Sun Sets</title>
+    <style>
+        /* Import a nice serif font for the elegant look */
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Parisienne&display=swap');
+
+        /* --- GLOBAL STYLES --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Cormorant Garamond', serif;
+            color: #333;
+            transition: background-color 2s ease-in-out;
+            /* Prevent scrolling on the cover page */
+            overflow: hidden; 
+        }
+
+        /* --- LOGIN SCREEN STYLES (COVER PAGE) --- */
+        #cover-page {
+            /* Smooth Gradient Background: deep blue top → warm pink → orange bottom */
+            background: linear-gradient(
+                to bottom,
+                #1a237e 0%,    /* Deep Blue */
+                #ff80ab 50%,   /* Warm Pink */
+                #ff5722 100%   /* Orange */
+            );
+            height: 100vh;
+            width: 100vw; /* Ensure it takes full width */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            z-index: 10;
+        }
+
+        #cover-page.fade-out {
+            animation: sunsetFade 2s forwards;
+        }
+
+        /* Unlock Animation: a slow "sunset fade" */
+        @keyframes sunsetFade {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* Title at the top: “Read Me When the Sun Sets.” */
+        .cover-title {
+            font-family: 'Parisienne', cursive;
+            font-size: 4em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Subtext: “Only the right heart remembers the code.” */
+        .cover-subtitle {
+            font-size: 1.5em;
+            margin-bottom: 50px;
+            font-weight: 400;
+        }
+
+        /* Glowing password box shaped like a diary lock */
+        .password-box {
+            padding: 20px 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 40px 10px rgba(255, 179, 0, 0.8);
+            transition: all 0.5s ease;
+        }
+
+        .password-input {
+            width: 200px;
+            max-width: 80%; /* Added max-width for responsiveness */
+            padding: 10px;
+            font-size: 1.2em;
+            text-align: center;
+            border: none;
+            border-bottom: 2px solid white;
+            background: transparent;
+            color: white;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .password-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .unlock-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #ffb300;
+            border: none;
+            border-radius: 5px;
+            color: #333;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        /* --- INSIDE PAGES STYLES --- */
+        #inside-pages {
+            /* Light cream background with a slight paper texture. */
+            background-color: #f7f3e8;
+            background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e0e0e0' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M3 0h3v3H3V0zm0 3h3v3H3V3z'/%3E%3C/g%3E%3C/svg%3E");
+            min-height: 100vh;
+            padding: 50px 5%;
+            box-sizing: border-box;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 2s ease-in-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 5;
+            overflow-y: auto; /* Allow scrolling once unlocked */
+        }
+        
+        body.unlocked {
+            overflow: auto;
+        }
+
+        #inside-pages.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .page-content {
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.8;
+            font-size: 1.1em;
+            padding-bottom: 50px;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 40px;
+            font-family: 'Parisienne', cursive;
+            font-size: 1.8em;
+        }
+
+        .sunset-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2em;
+            color: #ff5722;
+        }
+        
+        /* --- COMMENT SECTION STYLES --- */
+        .comments-section {
+            margin-top: 60px;
+            border-top: 1px solid #ddd;
+            padding-top: 30px;
+        }
+
+        .comments-section h3 {
+            font-family: 'Parisienne', cursive;
+            font-size: 2.5em;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        #comment-form input, #comment-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            background-color: #fff;
+        }
+
+        #comment-form textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        #comment-form button {
+            padding: 10px 25px;
+            background: #ff80ab; /* Warm Pink */
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 1em;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        #comment-form button:hover {
+            background: #e91e63;
+        }
+
+        #comments-container {
+            margin-top: 30px;
+        }
+
+        .comment {
+            background-color: rgba(255, 255, 255, 0.5);
+            border-left: 4px solid #ff80ab;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .comment .comment-author {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .comment .comment-date {
+            font-size: 0.8em;
+            color: #888;
+            margin-left: 10px;
+        }
+
+        .comment .comment-text {
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* MEDIA QUERY for smaller screens (e.g., mobile) */
+        @media (max-width: 600px) {
+            .cover-title {
+                font-size: 2.5em;
+            }
+            .cover-subtitle {
+                font-size: 1.2em;
+                padding: 0 10px;
+            }
+            .page-content {
+                font-size: 1em;
+                line-height: 1.6;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="cover-page">
+        <h1 class="cover-title">Random Journal</h1>
+        <p class="cover-subtitle">Only the right heart remembers the code.</p>
+
+        <div class="password-box">
+            <input type="password" class="password-input" id="password" placeholder="The Code...">
+            <button class="unlock-button" onclick="attemptUnlock()">Unlock</button>
+        </div>
+    </div>
+
+    <div id="inside-pages">
+        <span class="sunset-icon">🌅</span>
+        <div class="page-content">
+            <p>Hey Cheska,</p>
+
+            <p>This might be a little random, but after school earlier, I was just mindlessly scrolling through Facebook when your school’s page suddenly popped up on my feed. They posted about the academic achievers, and out of instinct, I looked for your name. But I didn’t see it.</p>
+
+            <p>For a moment, my heart sank. I know how you’d react to something like that how easily you’d break down when it comes to your academics. I can almost picture you crying it all out somewhere quiet, just like before. It honestly hurts to imagine you like that. I know senior high school hasn’t been easy, especially since we both took STEM. But I didn’t expect this, especially knowing how much you once dreamed of having a love life and balancing everything at the same time.</p>
+
+            <p>Maybe things changed, or maybe you’re just in a different chapter of your life now. I mean, I’ve seen how you and your suitor are always together you both look happy. It’s that kind of sweet high school love people always talk about. But still, I can’t help but wonder why things turned out this way for you, academically. You’ve always been one of the smartest, most hardworking people I knew.</p>
+
+            <p>And honestly, even though we’re not together anymore, I just want you to know that I’m still proud of you. Always have been, and probably always will be. Even from afar, even without saying a word, I’ll quietly cheer for you.</p>
+
+            <p>Funny thing is, despite everything, I managed to get “With High Honors.” A part of me hoped you’d be proud of me, too. But I know things are different now, so I’m not expecting that. Still, the thought crossed my mind, and somehow, that was enough.</p>
+            
+            <p>I hope life’s treating you kindly, Cheska. I hope you’re still chasing your dreams, even if the path gets rough. I’ll always believe in you, I always have.</p>
+            
+            <p class="signature">— Hanna:)</p>
+
+            <div class="comments-section">
+                <h3>Leave a Reply</h3>
+                <form id="comment-form">
+                    <input type="text" id="commenter-name" placeholder="Your Name" required>
+                    <textarea id="comment-text" placeholder="Write your comment here..." required></textarea>
+                    <button type="submit">Post Comment</button>
+                </form>
+
+                <div id="comments-container">
+                    </div>
+            </div>
+            </div>
+    </div>
+
+    <script>
+        // --- UNLOCK FUNCTIONALITY ---
+        function attemptUnlock() {
+            const passwordInput = document.getElementById('password');
+            const coverPage = document.getElementById('cover-page');
+            const insidePages = document.getElementById('inside-pages');
+            const body = document.body;
+            
+            const correctCode = '08122009'; 
+
+            if (passwordInput.value === correctCode) {
+                coverPage.classList.add('fade-out');
+                
+                setTimeout(() => {
+                    insidePages.classList.add('show');
+                    body.classList.add('unlocked');
+                    // Load comments only after the page is unlocked and visible
+                    displayComments(); 
+                }, 1800);
+            } else {
+                alert('That\'s not the right heart\'s code.');
+                passwordInput.value = '';
+            }
+        }
+
+        // --- COMMENT FUNCTIONALITY ---
+        const commentForm = document.getElementById('comment-form');
+        const commentsContainer = document.getElementById('comments-container');
+        const commentsStorageKey = 'journalComments';
+
+        // Function to display comments from local storage
+        function displayComments() {
+            // Clear any existing comments to avoid duplicates
+            commentsContainer.innerHTML = '';
+            
+            // Get comments from local storage, or initialize an empty array if none exist
+            const comments = JSON.parse(localStorage.getItem(commentsStorageKey)) || [];
+
+            // Loop through each comment and create the HTML for it
+            comments.forEach(comment => {
+                const commentElement = document.createElement('div');
+                commentElement.classList.add('comment');
+
+                // Get a nicely formatted date string
+                const date = new Date(comment.timestamp).toLocaleString('en-US', { 
+                    year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit'
+                });
+
+                commentElement.innerHTML = `
+                    <div class="comment-author">
+                        ${comment.name}
+                        <span class="comment-date">${date}</span>
+                    </div>
+                    <p class="comment-text">${comment.text}</p>
+                `;
+                commentsContainer.appendChild(commentElement);
+            });
+        }
+
+        // Event listener for the form submission
+        commentForm.addEventListener('submit', function(event) {
+            // Prevent the default form submission which reloads the page
+            event.preventDefault();
+
+            // Get the values from the form fields
+            const commenterNameInput = document.getElementById('commenter-name');
+            const commentTextInput = document.getElementById('comment-text');
+
+            // Create a new comment object with a timestamp
+            const newComment = {
+                name: commenterNameInput.value,
+                text: commentTextInput.value,
+                timestamp: new Date().toISOString() // Store date in a standard format
+            };
+
+            // Get existing comments, add the new one, and save back to local storage
+            const comments = JSON.parse(localStorage.getItem(commentsStorageKey)) || [];
+            comments.push(newComment);
+            localStorage.setItem(commentsStorageKey, JSON.stringify(comments));
+
+            // Reset the form fields
+            commenterNameInput.value = '';
+            commentTextInput.value = '';
+
+            // Refresh the displayed comments
+            displayComments();
+        });
+    </script>
+
+</body>
+</html>
